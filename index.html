@@ -9,14 +9,42 @@
 		<script type="text/javascript" src="js/jquery-2.1.4.js"></script>
 		<script type="text/javascript" src="js/myFunction.js"></script>
 		<script type="text/javascript" src="js/lodash.js"></script>
+		<script type="text/javascript" src="js/jquery.leanModal.min.js"></script>
 	</head>
 	<body>
   		<div class="search">
 			<h1>My Bookmark</h1>
   			<input class="keyword" type="text"  placeholder=" Input the word you want to search">
   		</div>
-  			<div class="content" id="content"></div>
+  		<div class="content" id="content"></div>
+	
+		<div class="link">
+		<center>
+      		<a href="#createbookmark" class="createlink" id="modaltrigger">Create a new bookmark</a>
+			<a href="#deletebookmark" class="deletelink" id="modaltrigger2">Delete a bookmark</a>
+		<center>
+    	</div>
+ 		<div id="createbookmark" style="display:none;">
+    		<h1>Create a new bookmark</h1>
+    		<form id="createform" method="post" action="index.html">
+      			<label for="createmark">Enter the name of bookmark:</label>
+			  	<input type="text" id="createmark" class="txtfield" tabindex="1">   
+			  	<label for="createstamp">Enter the bookmark's timestamp：</label>
+			 	 <input type="text" id="createstamp" class="txtfield" tabindex="2">
+			  	<input type="submit" id="createsubmit" class="createlink-blu hidemodal" value="Summit" tabindex="3">
+    		</form>
+  		</div>
+		
+		<div id="deletebookmark" style="display:none;">
+    		<h1>Delete a bookmark</h1>
+    		<form id="deleteform" method="post" action="index.html">
+      			<label for="deletemark">Enter the name of bookmark:</label>
+			  	<input type="text" id="deletemark" class="txtfield" tabindex="1">   
+			  	<input type="submit" id="deletesubmit" class="deletelink-blu hidemodal" value="Summit" tabindex="2">
+    		</form>
+  		</div>
+  
 			<div class="pages" id="pages""></div> 
   		</div
-	</body>
+	></body>
 </html>

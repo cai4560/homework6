@@ -1,8 +1,10 @@
 var bookmarks;				   //初始获得的bookmarks
+var highlight_bookmarks		   //highlight的bookmarks
 var obj; 					   //bookmarks表示的内容层，html元素
 var pages;       			   //翻页导航层 ，html元素
 var allpages;				   //总页数，整数
 var pgindex = 1;               //当前页，整数
+var count = 1;
 //var upScroll;
 //var upOffset;
 
@@ -11,12 +13,10 @@ $(document).ready(function() {
 	//$.ajaxSettings.async = false;		//发送同步请求
 	$.getJSON("bookmarks.json", function(Para) {
 		bookmarks = Para;
-		
-		//add = {"title":"This is a new fuck marks","created":"1449743195"};  
-		//bookmarks.push(add);
-		//bookmarks.splice(0,1);
 		Initiation();	//将操作放在json的异步交互方法中可以省略ajaxSettings，或者使用setTimeout延时
 		Search();
+		$('#modaltrigger').leanModal({ top: 110, overlay: 0.45, closeButton: ".hidemodal" });
+		$('#modaltrigger2').leanModal({ top: 110, overlay: 0.45, closeButton: ".hidemodal" });
 	})
 });
 
@@ -26,6 +26,8 @@ function Initiation() {
 	}).value(); //显示调用 lodash.js
 	$(".content").html(contentStr);
 	Paging();
+	highlight_bookmarks = "";
+	$(".search .keyword").val("");
 }
 	
 function createBookmarks(title, created) {
@@ -60,7 +62,7 @@ function filterAndHighlight(target) {
 	var filter_result = bookmarks.filter(function(Para) {
 		return filtering.test(Para.title);
 	});	
-	var highlight_bookmarks = filter_result.map(function(Para) {
+	highlight_bookmarks = filter_result.map(function(Para) {
 	var highlight_title = Para.title.replace(
 	filtering, '<span class="heightlight">$&</span>');	//$&：从模式匹配得到的字符串将用于替换
 		return createBookmarks(highlight_title, Para.created);
@@ -119,14 +121,53 @@ function showPage(pageindex)
 	Paging()
 } 
 
-function addBookmark(){
-	var mark = prompt ("Please enter the name of bookmarks");
-	var timestamp = prompt("Please enter the timestamp of bookmarks");
-  	if (name!=null && name!="")
-    {
-    	document.write("Hello " + name + "!");
-    }
-}
-
+$(function(){
+  $('#createform').submit(function(e){
+	if(!($("#createmark").val()))
+	{
+		alert("Empty bookmark input!");
+		return false;
+	}
+	if(!($("#createstamp").val()))
+	{
+		alert("Empty timestamp input!");
+		return false;
+	}
+	var add = {"title":"","created":""};
+	add.title = $("#createmark").val();
+	add.created = $("#createstamp").val();  
+	if(highlight_bookmarks == ""){
+		bookmarks.push(add);
+		Initiation();
+	}
+	else{
+		var temp = createBookmarks(add.title,add.created);
+		highlight_bookmarks.push(temp);
+		bookmarks.push(add);
+		$(".content").html(highlight_bookmarks);
+		Paging();
+	}
+		
+	return false;
+});   
+  
+  $('#deleteform').submit(function(e){
+	if(!($("#deletemark").val()))
+	{
+		alert("Empty bookmark input!");
+		return false;
+	}
+	for(var i=0; i<bookmarks.length; i++){
+		if(bookmarks[i].title == $("#deletemark").val()){
+			bookmarks.splice(i,1);
+			Initiation();
+			break;
+		}
+		else
+			continue;
+	}
+	return false;
+  });  
+});
 
 
