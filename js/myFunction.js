@@ -1,17 +1,23 @@
-var bookmarks;
-var url = "bookmarks.json";
-var obj; 
-var pages;       			   //获取翻页层 
-var pgindex = 1;               //当前页 
+var bookmarks;				   //初始获得的bookmarks
+var obj; 					   //bookmarks表示的内容层，html元素
+var pages;       			   //翻页导航层 ，html元素
+var allpages;				   //总页数，整数
+var pgindex = 1;               //当前页，整数
+//var upScroll;
+//var upOffset;
 
 //所有包括在$(document).ready()里面的元素或事件都将会在DOM完成加载之后立即加载
 $(document).ready(function() {
 	//$.ajaxSettings.async = false;		//发送同步请求
-	$.getJSON(url, function(Para) {
+	$.getJSON("bookmarks.json", function(Para) {
 		bookmarks = Para;
+		
+		//add = {"title":"This is a new fuck marks","created":"1449743195"};  
+		//bookmarks.push(add);
+		//bookmarks.splice(0,1);
 		Initiation();	//将操作放在json的异步交互方法中可以省略ajaxSettings，或者使用setTimeout延时
 		Search();
-	});
+	})
 });
 
 function Initiation() {
@@ -65,7 +71,15 @@ function filterAndHighlight(target) {
 
 function Paging(){
 	obj = document.getElementById("content");  		//获取内容层
-	var allpages = Math.ceil(parseInt(obj.scrollHeight)/parseInt(obj. offsetHeight));//获取页面数量
+	allpages = Math.ceil(parseInt(obj.scrollHeight)/parseInt(obj. offsetHeight));//获取页面数量
+	/*
+	var eachmarks = parseInt(obj.scrollHeight)/marks.length;
+	upOffset = eachmarks * 10;
+	allpages = Math.ceil(marks.length/10);		//获取页面数量
+	upScroll = upOffset * allpages;
+	var temp = upOffset + "px";
+	$(".content").css("height",temp);
+	*/
 
 	if(typeof(marks) == "undefined")
 		document.getElementById("pages").innerHTML = "<b class=\"empty\"> 当前有0条记录!</b>";
@@ -88,17 +102,31 @@ function Paging(){
 }
 
 function gotopage(value){ 
-	try{ 
- 		value == "-1"?showPage(pgindex-1):showPage(pgindex+1); 
- 	}
- 	catch(e){  
- 	} 
-} 
+	if((value != -1||pgindex != 1)&&(value != 1||pgindex != allpages)){
+		try{ 
+			value == "-1"?showPage(parseInt(pgindex)-1):showPage(parseInt(pgindex)+1); 
+		}
+		catch(e){  
+		} 
+	}
+}
 
-function showPage(pageINdex) 
-{     
-    obj.scrollTop=(pageINdex-1)*parseInt(obj.offsetHeight);                                                                  //根据高度，输出指定的页 
-    pgindex=pageINdex; 
+function showPage(pageindex) 
+{    
+	//if(pageindex != allpages) 存在问题，最后一页自动补齐
+    obj.scrollTop=(pageindex-1)*parseInt(obj.offsetHeight)		//根据高度，输出指定的页
+    pgindex=pageindex; 
 	Paging()
 } 
+
+function addBookmark(){
+	var mark = prompt ("Please enter the name of bookmarks");
+	var timestamp = prompt("Please enter the timestamp of bookmarks");
+  	if (name!=null && name!="")
+    {
+    	document.write("Hello " + name + "!");
+    }
+}
+
+
 

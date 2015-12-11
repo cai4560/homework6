@@ -10,11 +10,11 @@ body {
 .search {
 	text-align: center;
 	height: 100px;
-	margin-bottom: 3%;
+	margin-bottom: 5%;
 }
 
 .search h1{
-	margin: 3% 0 3% 0;
+	margin: 2% 0 2% 0;
 	font-family:Arial, Helvetica, sans-serif;
 	color:#00CCFF;
 }
@@ -27,15 +27,14 @@ body {
 }
 
 .content {
-	margin-left: 5%;
-	margin-right: 5%;
-	margin-bottom: 1%;
+	margin-left: 8%;
+	margin-right: 8%;
 	font-size: 1.3em;
 	font-family:"Times New Roman", Times, serif;
     overflow-pageINdex:hidden; 
     overflow-y:hidden; 
     word-break:break-all; 
-	height : 650px;                                     /*调整显示区的高*/
+	height : 535px;                                     /*调整显示区的高*/
 }
 
 .content .heightlight{
@@ -49,7 +48,7 @@ body {
 	top: 1em;
 	line-height:100%;
 	color:#000000;
-	font-size: 0.9em;
+	font-size: 0.8em;
   	text-decoration:none;
 }
 
@@ -66,7 +65,8 @@ body {
 }
 
 .pages{
-	margin-top: 3%;
+	margin-top: 2%;
+	margin-bottom: 2%;
 	text-align: center;
 	font-family: "Times New Roman", Times, serif;
 }
@@ -92,3 +92,32 @@ body {
     color: #CC0000; 
     text-decoration: underline; 
 } 
+
+.buttons{
+	margin-top: 2%;
+	margin-bottom: 2%;
+	text-align: center;
+}
+
+.buttons .add{
+	width: 12%;
+	height: 40px;
+	margin-right: 5%;
+	font-size: 1em;
+	color: #FFFFFF;
+	background-color: #33CCCC;
+  	cursor: pointer;
+  	border-bottom-right-radius: 3px;
+  	border-top-right-radius: 3px;
+}
+
+.buttons .delete{
+	width: 12%;
+	height: 40px;
+	font-size: 1em;
+	color: #FFFFFF;
+	background-color: #FF0000;
+  	cursor: pointer;
+  	border-bottom-right-radius: 3px;
+  	border-top-right-radius: 3px;
+}
