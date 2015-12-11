@@ -1,0 +1,58 @@
+body {
+	background-image:url(../source/bg.jpg);
+	background-size:100%;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+.search {
+	text-align: center;
+	height: 100px;
+	margin-bottom: 8%;
+}
+
+.search h1{
+	margin: 5% 0 3% 0;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#00CCFF;
+}
+
+.search input {
+	width: 70%;
+	height: 40px;
+	font-size: 1.5em;
+	font-family:"Times New Roman", Times, serif;
+}
+
+.content {
+	margin-left: 5%;
+	margin-right: 5%;
+	font-size: 1.3em;
+	font-family:"Times New Roman", Times, serif;
+}
+
+.content .heightlight{
+	background-color:#FFFF00;
+	font-weight: 900;
+}
+
+.title {
+	text-align: left;
+	position: relative;
+	top: 1em;
+	line-height:125%;
+	color:#000000;
+  	text-decoration:none;
+}
+
+.created {
+	text-align: right;
+	font-style: oblique;
+	font-size: 0.8em;
+	color:#999999;
+	line-height:80%;
+}
+
+.split {
+	border: 1px dashed #CCCCCC;	
+}
