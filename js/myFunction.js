@@ -1,12 +1,15 @@
 var bookmarks;
 var url = "bookmarks.json";
+var obj; 
+var pages;       			   //è·å–ç¿»é¡µå±‚ 
+var pgindex = 1;               //å½“å‰é¡µ 
 
-//ËùÓĞ°üÀ¨ÔÚ$(document).ready()ÀïÃæµÄÔªËØ»òÊÂ¼ş¶¼½«»áÔÚDOMÍê³É¼ÓÔØÖ®ºóÁ¢¼´¼ÓÔØ
+//æ‰€æœ‰åŒ…æ‹¬åœ¨$(document).ready()é‡Œé¢çš„å…ƒç´ æˆ–äº‹ä»¶éƒ½å°†ä¼šåœ¨DOMå®ŒæˆåŠ è½½ä¹‹åç«‹å³åŠ è½½
 $(document).ready(function() {
-	//$.ajaxSettings.async = false;		//·¢ËÍÍ¬²½ÇëÇó
+	//$.ajaxSettings.async = false;		//å‘é€åŒæ­¥è¯·æ±‚
 	$.getJSON(url, function(Para) {
 		bookmarks = Para;
-		Initiation();	//½«²Ù×÷·ÅÔÚjsonµÄÒì²½½»»¥·½·¨ÖĞ¿ÉÒÔÊ¡ÂÔajaxSettings£¬»òÕßÊ¹ÓÃsetTimeoutÑÓÊ±
+		Initiation();	//å°†æ“ä½œæ”¾åœ¨jsonçš„å¼‚æ­¥äº¤äº’æ–¹æ³•ä¸­å¯ä»¥çœç•¥ajaxSettingsï¼Œæˆ–è€…ä½¿ç”¨setTimeoutå»¶æ—¶
 		Search();
 	});
 });
@@ -14,12 +17,13 @@ $(document).ready(function() {
 function Initiation() {
 	var contentStr = _.chain(bookmarks).map(function(Para) {		
 		return createBookmarks(Para.title, Para.created);
-	}).value(); //ÏÔÊ¾µ÷ÓÃ lodash.js
+	}).value(); //æ˜¾ç¤ºè°ƒç”¨ lodash.js
 	$(".content").html(contentStr);
+	Paging();
 }
 	
 function createBookmarks(title, created) {
-	var tempmark = '<div>';
+	var tempmark = '<div id="marks">';
 	tempmark = tempmark +  '<a href="" class="title">' + title + '</a>'
 		    			+  '<p class="created">Created @ ' + getTimeStamp(created) +'</p>'
 		    			+  '<div class="split"></div>'
@@ -29,7 +33,7 @@ function createBookmarks(title, created) {
 function getTimeStamp(timestamp) {
 	var time = new Date();
 	time.setTime(timestamp*1000);
-	//getMonth()µÄ·µ»ØÖµÊÇ0µ½11Ö®¼äµÄÒ»¸öÕûÊı...
+	//getMonth()çš„è¿”å›å€¼æ˜¯0åˆ°11ä¹‹é—´çš„ä¸€ä¸ªæ•´æ•°...
 	return time.getUTCFullYear() + "-" + (time.getUTCMonth()+1) + "-" + time.getUTCDate();
 }
 
@@ -46,16 +50,55 @@ function Search() {
 }
 
 function filterAndHighlight(target) {
-	var filtering = new RegExp(target, "igm");	//È«¾ÖÆ¥Åä£¬´óĞ¡Ğ´²»Ãô¸Ğ
+	var filtering = new RegExp(target, "igm");	//å…¨å±€åŒ¹é…ï¼Œå¤§å°å†™ä¸æ•æ„Ÿ
 	var filter_result = bookmarks.filter(function(Para) {
 		return filtering.test(Para.title);
-	});			
+	});	
 	var highlight_bookmarks = filter_result.map(function(Para) {
 	var highlight_title = Para.title.replace(
-	filtering, '<span class="heightlight">$&</span>');	//$&£º´ÓÄ£Ê½Æ¥ÅäµÃµ½µÄ×Ö·û´®½«ÓÃÓÚÌæ»»
+	filtering, '<span class="heightlight">$&</span>');	//$&ï¼šä»æ¨¡å¼åŒ¹é…å¾—åˆ°çš„å­—ç¬¦ä¸²å°†ç”¨äºæ›¿æ¢
 		return createBookmarks(highlight_title, Para.created);
 	});
 	$(".content").html(highlight_bookmarks);
+	Paging();
 }
 
+function Paging(){
+	obj = document.getElementById("content");  		//è·å–å†…å®¹å±‚
+	var allpages = Math.ceil(parseInt(obj.scrollHeight)/parseInt(obj. offsetHeight));//è·å–é¡µé¢æ•°é‡
+
+	if(typeof(marks) == "undefined")
+		document.getElementById("pages").innerHTML = "<b class=\"empty\"> å½“å‰æœ‰0æ¡è®°å½•!</b>";
+	else
+	{	
+		if(!marks.length)
+			marks.length = 1;
+		document.getElementById("pages").innerHTML = "<b> å½“å‰æœ‰"+ marks.length +"æ¡è®°å½•ï¼Œ</b>";
+    	pages = document.getElementById("pages");     //è¾“å‡ºé¡µé¢æ•°é‡ 
+		pages.innerHTML +=Â "<b> åˆ†"+ allpages +"é¡µæ˜¾ç¤º </b>Â Â Â Â Â Â ";
+		pages.innerHTML +=Â " <a href=\"javascript:gotopage('-1');\">ä¸Šä¸€é¡µ</a>Â Â Â Â ";Â 
+    	for (var i=1;i<=allpages;i++){ 
+			if(pgindex != i)
+        		pages.innerHTML += "<a href=\"javascript:showPage('"+i+"');\">"+i+"</a>Â Â Â Â ";  
+			else
+				pages.innerHTML += "<a class=\"current\" href=\"javascript:showPage('"+i+"');\">"+i+"</a>Â Â Â Â ";  
+    	} 
+    	pages.innerHTML += " <a href=\"javascript:gotopage('+1');\">ä¸‹ä¸€é¡µ</a>";
+	}
+}
+
+function gotopage(value){ 
+	try{ 
+ 		value == "-1"?showPage(pgindex-1):showPage(pgindex+1); 
+ 	}
+ 	catch(e){  
+ 	} 
+} 
+
+function showPage(pageINdex) 
+{     
+    obj.scrollTop=(pageINdex-1)*parseInt(obj.offsetHeight);                                                                  //æ ¹æ®é«˜åº¦ï¼Œè¾“å‡ºæŒ‡å®šçš„é¡µ 
+    pgindex=pageINdex; 
+	Paging()
+} 
 

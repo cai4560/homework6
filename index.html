@@ -1,20 +1,22 @@
 <!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
 <html>
 	<head>
 		<title>My Bookmark</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="stylesheets/main.css">
-		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+		<script type="text/javascript" src="js/jquery-2.1.4.js"></script>
 		<script type="text/javascript" src="js/myFunction.js"></script>
 		<script type="text/javascript" src="js/lodash.js"></script>
 	</head>
 	<body>
   		<div class="search">
 			<h1>My Bookmark</h1>
-  			<input class="keyword" id="keyword "type="text"  placeholder=" Input the word you want to search">
+  			<input class="keyword" type="text"  placeholder=" Input the word you want to search">
   		</div>
-  			<div class="content">
+  			<div class="content" id="content"></div>
+			<div class="pages" id="pages""></div> 
   		</div>
 	</body>
 </html>
