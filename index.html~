@@ -14,7 +14,7 @@
 	<body>
   		<div class="search">
 			<h1>My Bookmark</h1>
-  			<input class="keyword" id="keyword" type="text"  placeholder=" Input the word you want to search">
+  			<input class="keyword" type="text"  placeholder=" Input the word you want to search">
   		</div>
   		<div class="content" id="content"></div>
 	
