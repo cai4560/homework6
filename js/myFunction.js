@@ -92,12 +92,11 @@ function Paging(){
 		document.getElementById("pages").innerHTML = "<b> 当前有"+ marks.length +"条记录，</b>";
 		*/
 		if(highlight_bookmarks == "")
-			document.getElementById("pages").innerHTML = "<b> 当前有"+ bookmarks.length +"条记录，</b>";
+			document.getElementById("pages").innerHTML = "<b> 当前有<span id='bookmarksnum'>"+ bookmarks.length +"</span>条记录，</b>";
 		else
-			document.getElementById("pages").innerHTML = "<b> 当前有"+ highlight_bookmarks.length +"条记录，</b>";
-
+			document.getElementById("pages").innerHTML = "<b> 当前有<span id='bookmarksnum'>"+highlight_bookmarks.length +"</span>条记录，</b>";
     pages = document.getElementById("pages");     //输出页面数量
-		pages.innerHTML += "<b> 分"+ allpages +"页显示 </b>      ";
+		pages.innerHTML += "<b> 分<span id='pagenum'>"+ allpages +"</span>页显示 </b>      ";
 		pages.innerHTML += " <a href=\"javascript:gotopage('-1');\">上一页</a>    "; 
     	for (var i=1;i<=allpages;i++){
 			if(pgindex != i)
