@@ -1,5 +1,5 @@
 var bookmarks;				   //初始获得的bookmarks
-var highlight_bookmarks		   //highlight的bookmarks
+var highlight_bookmarks	="";	   //highlight的bookmarks
 var obj; 					   //bookmarks表示的内容层，html元素
 var pages;       			   //翻页导航层 ，html元素
 var allpages;				   //总页数，整数
@@ -21,7 +21,7 @@ $(document).ready(function() {
 });
 
 function Initiation() {
-	var contentStr = _.chain(bookmarks).map(function(Para) {		
+	var contentStr = _.chain(bookmarks).map(function(Para) {
 		return createBookmarks(Para.title, Para.created);
 	}).value(); //显示调用 lodash.js
 	$(".content").html(contentStr);
@@ -29,7 +29,7 @@ function Initiation() {
 	highlight_bookmarks = "";
 	$(".search .keyword").val("");
 }
-	
+
 function createBookmarks(title, created) {
 	var tempmark = '<div id="marks">';
 	tempmark = tempmark +  '<a href="" class="title">' + title + '</a>'
@@ -37,7 +37,7 @@ function createBookmarks(title, created) {
 		    			+  '<div class="split"></div>'
 	return tempmark+'</div>';
 }
-	
+
 function getTimeStamp(timestamp) {
 	var time = new Date();
 	time.setTime(timestamp*1000);
@@ -50,10 +50,10 @@ function Search() {
 		var target = $(this).val();
 		if (target != null) {
 			filterAndHighlight(target);
-			} 
+			}
 		else{
 			Initiation();
-		}			
+		}
 	});
 }
 
@@ -61,7 +61,7 @@ function filterAndHighlight(target) {
 	var filtering = new RegExp(target, "igm");	//全局匹配，大小写不敏感
 	var filter_result = bookmarks.filter(function(Para) {
 		return filtering.test(Para.title);
-	});	
+	});
 	highlight_bookmarks = filter_result.map(function(Para) {
 	var highlight_title = Para.title.replace(
 	filtering, '<span class="heightlight">$&</span>');	//$&：从模式匹配得到的字符串将用于替换
@@ -86,40 +86,46 @@ function Paging(){
 	if(typeof(marks) == "undefined")
 		document.getElementById("pages").innerHTML = "<b class=\"empty\"> 当前有0条记录!</b>";
 	else
-	{	
-		if(!marks.length)
+	{
+		/*if(!marks.length)     Firefox have different result of marks.length
 			marks.length = 1;
 		document.getElementById("pages").innerHTML = "<b> 当前有"+ marks.length +"条记录，</b>";
-    	pages = document.getElementById("pages");     //输出页面数量 
+		*/
+		if(highlight_bookmarks == "")
+			document.getElementById("pages").innerHTML = "<b> 当前有"+ bookmarks.length +"条记录，</b>";
+		else
+			document.getElementById("pages").innerHTML = "<b> 当前有"+ highlight_bookmarks.length +"条记录，</b>";
+
+    pages = document.getElementById("pages");     //输出页面数量
 		pages.innerHTML += "<b> 分"+ allpages +"页显示 </b>      ";
 		pages.innerHTML += " <a href=\"javascript:gotopage('-1');\">上一页</a>    "; 
-    	for (var i=1;i<=allpages;i++){ 
+    	for (var i=1;i<=allpages;i++){
 			if(pgindex != i)
-        		pages.innerHTML += "<a href=\"javascript:showPage('"+i+"');\">"+i+"</a>    ";  
+        		pages.innerHTML += "<a href=\"javascript:showPage('"+i+"');\">"+i+"</a>    ";
 			else
-				pages.innerHTML += "<a class=\"current\" href=\"javascript:showPage('"+i+"');\">"+i+"</a>    ";  
-    	} 
+				pages.innerHTML += "<a class=\"current\" href=\"javascript:showPage('"+i+"');\">"+i+"</a>    ";
+    	}
     	pages.innerHTML += " <a href=\"javascript:gotopage('+1');\">下一页</a>";
 	}
 }
 
-function gotopage(value){ 
+function gotopage(value){
 	if((value != -1||pgindex != 1)&&(value != 1||pgindex != allpages)){
-		try{ 
-			value == "-1"?showPage(parseInt(pgindex)-1):showPage(parseInt(pgindex)+1); 
+		try{
+			value == "-1"?showPage(parseInt(pgindex)-1):showPage(parseInt(pgindex)+1);
 		}
-		catch(e){  
-		} 
+		catch(e){
+		}
 	}
 }
 
-function showPage(pageindex) 
-{    
+function showPage(pageindex)
+{
 	//if(pageindex != allpages) 存在问题，最后一页自动补齐
     obj.scrollTop=(pageindex-1)*parseInt(obj.offsetHeight)		//根据高度，输出指定的页
-    pgindex=pageindex; 
+    pgindex=pageindex;
 	Paging()
-} 
+}
 
 $(function(){
   $('#createform').submit(function(e){
@@ -135,7 +141,7 @@ $(function(){
 	}
 	var add = {"title":"","created":""};
 	add.title = $("#createmark").val();
-	add.created = $("#createstamp").val();  
+	add.created = $("#createstamp").val();
 	if(highlight_bookmarks == ""){
 		bookmarks.push(add);
 		Initiation();
@@ -147,10 +153,10 @@ $(function(){
 		$(".content").html(highlight_bookmarks);
 		Paging();
 	}
-		
+
 	return false;
-});   
-  
+});
+
   $('#deleteform').submit(function(e){
 	if(!($("#deletemark").val()))
 	{
@@ -160,6 +166,7 @@ $(function(){
 	for(var i=0; i<bookmarks.length; i++){
 		if(bookmarks[i].title == $("#deletemark").val()){
 			bookmarks.splice(i,1);
+			highlight_bookmarks = '';
 			Initiation();
 			break;
 		}
@@ -167,7 +174,5 @@ $(function(){
 			continue;
 	}
 	return false;
-  });  
+  });
 });
-
-

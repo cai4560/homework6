@@ -11,7 +11,7 @@ var count = 1;
 //所有包括在$(document).ready()里面的元素或事件都将会在DOM完成加载之后立即加载
 $(document).ready(function() {
 	//$.ajaxSettings.async = false;		//发送同步请求
-	$.getJSON("bookmarks.json", function(Para) {
+	$.getJSON("source/bookmarks.json", function(Para) {
 		bookmarks = Para;
 		Initiation();	//将操作放在json的异步交互方法中可以省略ajaxSettings，或者使用setTimeout延时
 		Search();
